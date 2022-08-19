@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class  UserServiceImpl  implements UserService {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		User user = new User(registrationDto.getFirstName(),
 	            registrationDto.getLastName(), registrationDto.getEmail(),
-	            passwordEncoder.encode(registrationDto.getPassword()), Arrays.asList(new Role("ROLE_USER")));
+	            passwordEncoder.encode(registrationDto.getPassword()), Arrays.asList(new Role(registrationDto.getRole())));
 		return userRepository.save(user);
 	}
 
@@ -47,6 +48,11 @@ public class  UserServiceImpl  implements UserService {
 		
 		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
+
+	@Override
+	public List<User> getAllUsers() {
+		return userRepository.findAll();
+	}
 	
 	
 
