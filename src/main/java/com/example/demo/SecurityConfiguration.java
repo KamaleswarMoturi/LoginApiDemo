@@ -19,7 +19,7 @@ public class SecurityConfiguration  {
 
 	 @Autowired
 	  private UserService userService;
-//	 @Override
+//	 	@Override
 //	    protected void configure(HttpSecurity http) throws Exception {
 //	        http
 //	            .authorizeRequests()
@@ -42,6 +42,7 @@ public class SecurityConfiguration  {
 //	            .logoutSuccessUrl("/login?logout")
 //	            .permitAll();
 //	    }
+	
 	 @Bean
 	   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		 http.authenticationProvider(authenticationProvider());
@@ -54,11 +55,14 @@ public class SecurityConfiguration  {
 	                "/img/**",
 	                "/webjars/**").permitAll()
 		 		.antMatchers("/displayUsers").access("hasRole('ROLE_ADMIN')")
+		 		
 	            .anyRequest().authenticated()   
 	            .and()
 	            .formLogin()
 	            .loginPage("/login")
 	            .permitAll()
+	            .and()
+	            .exceptionHandling().accessDeniedPage("/403")
 	            .and()
 	            .logout()
 	            .invalidateHttpSession(true)
